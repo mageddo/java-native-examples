@@ -1,4 +1,4 @@
-package nativeapi.jna;
+package nativeapi.jna.nativelibrary;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
