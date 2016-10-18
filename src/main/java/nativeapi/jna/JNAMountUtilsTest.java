@@ -1,4 +1,4 @@
-package nativeapi.jna.network;
+package nativeapi.jna;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,18 +10,22 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
 /**
+ *
+ * Calling some standard c functions,
+ * passing and getting complex structs by reference, working with files and more
+ *
  * @author elvis
  * @version $Revision: $<br/>
  *          $Id: $
  * @since 10/17/16 3:36 PM
  */
-public class JNAUtilsTest {
+public class JNAMountUtilsTest {
 
     public interface CLibrary extends Library {
         CLibrary INSTANCE = (CLibrary) Native.loadLibrary("c", CLibrary.class);
         int gethostname(byte[] name, int nameLength);
         Pointer fopen(String name, String mode);
-        Mtent.ByReference getmntent(Pointer FILE);
+        MountContent.ByReference getmntent(Pointer FILE);
     }
 
     public static void main(String[] args) {
@@ -36,15 +40,14 @@ public class JNAUtilsTest {
             System.err.println("File not exists: " + nfsPath);
             System.exit(-1);
         }
-//        final Pointer mountFile = CLibrary.INSTANCE.fopen("/proc/mounts", "r");
-        Mtent.ByReference mtent;
+        MountContent.ByReference mtent;
         while( (mtent = CLibrary.INSTANCE.getmntent(mountFile)) != null ){
             System.out.println(mtent);
         }
 
     }
 
-    public static class Mtent extends Structure {
+    public static class MountContent extends Structure {
 
         public String mnt_fsname;
         public String mnt_dir;
@@ -56,14 +59,14 @@ public class JNAUtilsTest {
         @Override
         protected List getFieldOrder() {
             List<String> fieds = new ArrayList<>();
-            for(final Field f: Mtent.class.getDeclaredFields()){
+            for(final Field f: MountContent.class.getDeclaredFields()){
                 if(!f.isSynthetic())
                     fieds.add(f.getName());
             }
             return fieds;
         }
 
-        public static class ByReference extends Mtent implements Structure.ByReference {}
-        public static class ByValue extends Mtent implements Structure.ByValue {}
+        public static class ByReference extends MountContent implements Structure.ByReference {}
+        public static class ByValue extends MountContent implements Structure.ByValue {}
     }
 }
