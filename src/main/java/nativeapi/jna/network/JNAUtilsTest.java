@@ -30,7 +30,12 @@ public class JNAUtilsTest {
         int returnCode = CLibrary.INSTANCE.gethostname(hostname, hostname.length);
         System.out.printf("%s - %d\n", new String(hostname), returnCode);
 
-        final Pointer mountFile = CLibrary.INSTANCE.fopen("/home/elvis/dev/projects/java-native-examples/src/main/resources/mnt/proc_mounts", "r");
+        final String nfsPath = Class.class.getResource("/mnt/etc_mtab").getPath();
+        final Pointer mountFile = CLibrary.INSTANCE.fopen(nfsPath, "r");
+        if(mountFile == null){
+            System.err.println("File not exists: " + nfsPath);
+            System.exit(-1);
+        }
 //        final Pointer mountFile = CLibrary.INSTANCE.fopen("/proc/mounts", "r");
         Mtent.ByReference mtent;
         while( (mtent = CLibrary.INSTANCE.getmntent(mountFile)) != null ){
