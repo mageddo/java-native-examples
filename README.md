@@ -7,6 +7,10 @@ Some Examples using JNI and JNA
 * Get mounted points
 
 
+# Compile a module do something like
+
+ 	gcc -fPIC -shared -o libhello.so hello.c
+
 # Search Reference
 
 * [get domain name linux - Google Search](https://www.google.com.br/search?q=get+domain+name+linux&oq=get+domain+name+linux&aqs=chrome..69i57j0l5.4238j0j7&sourceid=chrome&ie=UTF-8)
@@ -30,7 +34,7 @@ Some Examples using JNI and JNA
 * [Java Native Access - Wikipedia](https://en.wikipedia.org/wiki/Java_Native_Access)
 * [linux syscall table x64 - Google Search](https://www.google.com.br/search?q=linux+syscall+table+x64&oq=linux+syscall+numbers&gs_l=serp.3.0.0i71k1l8.0.0.0.11053.0.0.0.0.0.0.0.0..0.0....0...1c..64.serp..0.0.0.iEj_96IHEqo)
 * [SourceForge.net](https://sourceforge.net/projects/strace/ | strace download)
-* [Linux System Call Table for x86 64 · Ryan A. Chapman](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
+* [Linux System Call Table for x86 64 ï¿½ Ryan A. Chapman](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
 * [PyTux](https://filippo.io/linux-syscall-table/ | Searchable Linux Syscall Table for x86 and x86_64)
 * [linux system call numbers - Google Search](https://www.google.com.br/search?q=linux+system+call+numbers&oq=linux+system+call&aqs=chrome.3.69i57j0l5.6759j0j4&sourceid=chrome&ie=UTF-8)
 * [mkdir(2) - Linux manual page](http://man7.org/linux/man-pages/man2/mkdir.2.html)
@@ -51,10 +55,10 @@ Some Examples using JNI and JNA
 * [dynamic loading - Difference between System.load() and System.loadLibrary in Java - Stack Overflow](http://stackoverflow.com/questions/7016391/difference-between-system-load-and-system-loadlibrary-in-java)
 * [jni hello world example github - Google Search](https://www.google.com.br/search?q=jni+hello+world+example+github&oq=jni+hello+world+example+github&gs_l=serp.3..33i21k1.3974.4631.0.4797.7.7.0.0.0.0.171.643.3j3.6.0....0...1c.1.64.serp..1.4.460...0i22i30k1.0g8ptJGR3uk)
 * [A simple example of JNI (MoonOcean)](https://blogs.oracle.com/moonocean/entry/a_simple_example_of_jni)
-* [jni-example/hello-jni.c at master · swankjesse/jni-example](https://github.com/swankjesse/jni-example/blob/master/jniexample/src/main/jni/hello-jni.c)
+* [jni-example/hello-jni.c at master ï¿½ swankjesse/jni-example](https://github.com/swankjesse/jni-example/blob/master/jniexample/src/main/jni/hello-jni.c)
 * [java load standard c library - Google Search](https://www.google.com.br/search?q=java+load+standard+c+library&oq=java+load+standard+c+library&gs_l=serp.3...4604.4683.0.4894.2.2.0.0.0.0.109.205.1j1.2.0....0...1c.1.64.serp..1.0.0.EI9c88rcOsU)
 * [Calling C From Java Is Easy ? The Mindful Programmer](http://jonisalonen.com/2012/calling-c-from-java-is-easy/)
-* [gradle-jni-example/build.gradle at master · cory-johannsen/gradle-jni-example](https://github.com/cory-johannsen/gradle-jni-example/blob/master/build.gradle)
+* [gradle-jni-example/build.gradle at master ï¿½ cory-johannsen/gradle-jni-example](https://github.com/cory-johannsen/gradle-jni-example/blob/master/build.gradle)
 * [The GNU C Library](https://www.gnu.org/software/libc/manual/html_mono/libc.html#Host-Identification)
 * [getmntent(3): file system descriptor file entry - Linux man page](https://linux.die.net/man/3/getmntent)
 * [Overview (JNA API) ? Project Kenai](https://jna.java.net/javadoc/overview-summary.html#marshalling)
@@ -71,7 +75,7 @@ Some Examples using JNI and JNA
 * [Java JNA: JRE crashes after application completes - Stack Overflow](http://stackoverflow.com/questions/37678424/java-jna-jre-crashes-after-application-completes)
 * [jna pass structure by reference - Google Search](https://www.google.com.br/search?q=jna+pass+structure+by+reference+&oq=jna+pass+structure+by+reference+&gs_l=serp.3..0i22i30k1.1075.1566.0.1771.3.3.0.0.0.0.94.278.3.3.0....0...1c.1.64.serp..0.1.94.qFaDhMxyTIs)
 * [java - How to make structure in JNA? - Stack Overflow](http://stackoverflow.com/questions/15050391/how-to-make-structure-in-jna)
-* [jna/FrequentlyAskedQuestions.md at master · java-native-access/jna](https://github.com/java-native-access/jna/blob/master/www/FrequentlyAskedQuestions.md#my-library-sometimes-causes-a-vm-crash)
+* [jna/FrequentlyAskedQuestions.md at master ï¿½ java-native-access/jna](https://github.com/java-native-access/jna/blob/master/www/FrequentlyAskedQuestions.md#my-library-sometimes-causes-a-vm-crash)
 * [get domain name linux - Google Search](https://www.google.com.br/search?q=get+domain+name+linux&oq=get+domain+name+linux&aqs=chrome..69i57j0l5.4238j0j7&sourceid=chrome&ie=UTF-8)
 * [ElvisDeFreitas / home ? Bitbucket](https://bitbucket.org/dashboard/repositories?search=web)
 * [127.0.0.1:3800/atm-admin/info](http://127.0.0.1:3800/atm-admin/info)
@@ -95,7 +99,7 @@ Some Examples using JNI and JNA
 * [Java Native Access - Wikipedia](https://en.wikipedia.org/wiki/Java_Native_Access)
 * [linux syscall table x64 - Google Search](https://www.google.com.br/search?q=linux+syscall+table+x64&oq=linux+syscall+numbers&gs_l=serp.3.0.0i71k1l8.0.0.0.11053.0.0.0.0.0.0.0.0..0.0....0...1c..64.serp..0.0.0.iEj_96IHEqo)
 * [SourceForge.net](https://sourceforge.net/projects/strace/ | strace download)
-* [Linux System Call Table for x86 64 · Ryan A. Chapman](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
+* [Linux System Call Table for x86 64 ï¿½ Ryan A. Chapman](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
 * [PyTux](https://filippo.io/linux-syscall-table/ | Searchable Linux Syscall Table for x86 and x86_64)
 * [linux system call numbers - Google Search](https://www.google.com.br/search?q=linux+system+call+numbers&oq=linux+system+call&aqs=chrome.3.69i57j0l5.6759j0j4&sourceid=chrome&ie=UTF-8)
 * [mkdir(2) - Linux manual page](http://man7.org/linux/man-pages/man2/mkdir.2.html)
@@ -116,7 +120,7 @@ Some Examples using JNI and JNA
 * [dynamic loading - Difference between System.load() and System.loadLibrary in Java - Stack Overflow](http://stackoverflow.com/questions/7016391/difference-between-system-load-and-system-loadlibrary-in-java)
 * [jni hello world example github - Google Search](https://www.google.com.br/search?q=jni+hello+world+example+github&oq=jni+hello+world+example+github&gs_l=serp.3..33i21k1.3974.4631.0.4797.7.7.0.0.0.0.171.643.3j3.6.0....0...1c.1.64.serp..1.4.460...0i22i30k1.0g8ptJGR3uk)
 * [A simple example of JNI (MoonOcean)](https://blogs.oracle.com/moonocean/entry/a_simple_example_of_jni)
-* [jni-example/hello-jni.c at master · swankjesse/jni-example](https://github.com/swankjesse/jni-example/blob/master/jniexample/src/main/jni/hello-jni.c)
+* [jni-example/hello-jni.c at master ï¿½ swankjesse/jni-example](https://github.com/swankjesse/jni-example/blob/master/jniexample/src/main/jni/hello-jni.c)
 * [java load standard c library - Google Search](https://www.google.com.br/search?q=java+load+standard+c+library&oq=java+load+standard+c+library&gs_l=serp.3...4604.4683.0.4894.2.2.0.0.0.0.109.205.1j1.2.0....0...1c.1.64.serp..1.0.0.EI9c88rcOsU)
 * [Calling C From Java Is Easy ? The Mindful Programmer](http://jonisalonen.com/2012/calling-c-from-java-is-easy/)
-* [gradle-jni-example/build.gradle at master · cory-johannsen/gradle-jni-example](https://github.com/cory-johannsen/gradle-jni-example/blob/master/build.gradle)
+* [gradle-jni-example/build.gradle at master ï¿½ cory-johannsen/gradle-jni-example](https://github.com/cory-johannsen/gradle-jni-example/blob/master/build.gradle)
