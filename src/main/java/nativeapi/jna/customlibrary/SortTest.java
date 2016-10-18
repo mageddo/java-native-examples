@@ -32,7 +32,6 @@ public class SortTest {
 			myArr[i] = stream.nextInt();
 		}
 
-		LibSort.INSTANCE.sort(new int[]{1}, 1);
 
 		final int[] myArrCopy = Arrays.copyOf(myArr, myArr.length);
 		long cStartTime, cEndTime, javaStartTime, javaEndTime;
