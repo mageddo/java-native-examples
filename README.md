@@ -1,23 +1,20 @@
-Some Examples using JNI and JNA
-
-
-# JNAUtilsTest (LINUX)
-
-* Get machine hostname
-* Get mounted points
-
-
-# Testing it
+## JNA
 
 	./gradle clean build
 
 Then, navigate to the code then run the main functions in your favorite IDE (tested at INTELLIJ)
 
-# Compile a module do something like
+## CGO
+
+## Running c functions in go program
+
+	./builder && go run src/main/go/cmd/main.go
+
+## Compile a module do something like
 
  	gcc -fPIC -shared -o libhello.so hello.c
 
-# Search Reference
+## Search Reference
 
 * [get domain name linux - Google Search](https://www.google.com.br/search?q=get+domain+name+linux&oq=get+domain+name+linux&aqs=chrome..69i57j0l5.4238j0j7&sourceid=chrome&ie=UTF-8)
 * [check if a folder is nfs - Google Search](https://www.google.com.br/search?q=check+if+a+folder+is+nfs&oq=check+if+a+folder+is+nfs&aqs=chrome..69i57j0l5.4006j0j7&sourceid=chrome&ie=UTF-8)
