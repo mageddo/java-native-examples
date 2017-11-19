@@ -7,6 +7,13 @@ Some Examples using JNI and JNA
 * Get mounted points
 
 
+# Testing it
+
+	# building the custom c libs
+	./builder
+
+navigate to the code then run the main functions in your favorite IDE (tested at INTELLIJ)
+
 # Compile a module do something like
 
  	gcc -fPIC -shared -o libhello.so hello.c
