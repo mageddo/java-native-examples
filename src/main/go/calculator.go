@@ -1,3 +1,4 @@
+// https://github.com/vladimirvivien/go-cshared-examples/blob/master/awesome.go
 package main
 
 import "C"

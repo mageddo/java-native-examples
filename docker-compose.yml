@@ -1,0 +1,10 @@
+version: '2'
+services:
+  jna-compiler:
+    build:
+      context: .
+    image: defreitas/jna-examples:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: ./gradlew clean build
