@@ -1,7 +1,7 @@
 #!/bin/sh
 
 rm -rf src/main/resources/lib/
-mkdir -p src/main/resources/lib/
+mkdir -p src/main/resources/lib/include
 
 echo "building hello lib"
 gcc -fPIC -shared -o src/main/resources/lib/libhello.so src/main/c/hello.c
@@ -14,3 +14,6 @@ gcc -fPIC -shared -o src/main/resources/lib/libcounter.so src/main/c/counter.c
 
 echo "building gocalc lib"
 go build -o src/main/resources/lib/libgocalc.so -buildmode=c-shared src/main/go/calculator.go
+
+echo "copying header files"
+cp src/main/c/include/* src/main/resources/lib/include/

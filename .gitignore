@@ -7,3 +7,4 @@ build/
 *.swp
 *.out
 out
+src/main/resources/lib/

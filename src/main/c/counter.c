@@ -1,3 +1,4 @@
+#include "include/counter.h"
 #include<stdio.h>
 
 int counter = 0;
