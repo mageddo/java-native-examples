@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rm -rf src/main/resources/lib/
 mkdir -p src/main/resources/lib/
