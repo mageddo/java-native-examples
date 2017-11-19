@@ -1,2 +1,2 @@
-FROM alpine:3.5
-RUN apk add --update bash openjdk8 go
+FROM golang:1.9
+RUN apt-get update && apt-get install -y openjdk-8-jdk
