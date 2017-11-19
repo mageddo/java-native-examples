@@ -10,9 +10,6 @@ import java.util.Scanner;
 
 import static nativeapi.jna.customlibrary.CustomLibraryJNATest.getLibPath;
 
-/**
- * Created by elvis on 18/10/16.
- */
 public class SortTest {
 
 	interface LibSort extends Library {
@@ -32,7 +29,6 @@ public class SortTest {
 			myArr[i] = stream.nextInt();
 		}
 
-
 		final int[] myArrCopy = Arrays.copyOf(myArr, myArr.length);
 		long cStartTime, cEndTime, javaStartTime, javaEndTime;
 
@@ -47,12 +43,6 @@ public class SortTest {
 		System.out.println("JAVA sort");
 
 		System.out.printf("java time=%d, c time=%d", (javaEndTime - javaStartTime) , (cEndTime - cStartTime) );
-
-
-//		System.out.println(Arrays.toString(myArr));
-//		System.out.println(Arrays.toString(myArrCopy));
-
-
 
 	}
 

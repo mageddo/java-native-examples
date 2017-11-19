@@ -5,14 +5,7 @@ import com.sun.jna.Native;
 
 import static nativeapi.jna.customlibrary.CustomLibraryJNATest.LibHello.INSTANCE;
 
-/**
- * Created by elvis on 17/10/16.
- */
 public class CustomLibraryJNATest {
-
-	static {
-//		System.setProperty("jna.library.path", Class.class.getResource("/lib").getPath());
-	}
 
 	interface LibHello extends Library {
 
