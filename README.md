@@ -9,10 +9,9 @@ Some Examples using JNI and JNA
 
 # Testing it
 
-	# building the custom c libs
-	./builder
+	./gradle clean build
 
-navigate to the code then run the main functions in your favorite IDE (tested at INTELLIJ)
+Then, navigate to the code then run the main functions in your favorite IDE (tested at INTELLIJ)
 
 # Compile a module do something like
 

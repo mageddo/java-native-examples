@@ -10,4 +10,4 @@ echo 'building sort lib'
 gcc -fPIC -shared -o src/main/resources/lib/libsort.so src/main/c/sort.c
 
 echo 'building test lib'
-gcc -fPIC -shared -o src/main/resources/lib/libctest.so src/main/c/ctest.c
+gcc -fPIC -shared -o src/main/resources/lib/libcounter.so src/main/c/counter.c
