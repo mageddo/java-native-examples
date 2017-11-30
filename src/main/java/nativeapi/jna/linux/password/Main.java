@@ -1,22 +1,51 @@
 package nativeapi.jna.linux.password;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * https://linux.die.net/man/3/getpwnam
+ * http://man7.org/linux/man-pages/man3/crypt.3.html
  * https://www.gnu.org/software/coreutils/coreutils.html
  * https://github.com/wertarbyte/coreutils/blob/master/src/su.c
  */
 public class Main {
 	public static void main(String[] args) {
-		System.out.println(CLibrary.INSTANCE.getpwnam("root"));
-		System.out.println(CLibrary.INSTANCE.getspnam("elvis"));
-		System.out.println(Native.getLastError());
+		final Scanner scanner = new Scanner(System.in);
+
+		System.out.println("type the user");
+		final String user = scanner.nextLine();
+
+		System.out.println("type password");
+		final String password = scanner.nextLine();
+
+		System.out.println("RESULT\n===========================================");
+		final SPassword passwd = CLibrary.INSTANCE.getspnam(user);
+		if(passwd == null){
+			// http://man7.org/linux/man-pages/man3/errno.3.html
+			// it can be
+			// EACCES(13) The caller does not have permission to access the shadow password file.
+			// ERANGE(34) Supplied buffer is too small.
+			throw new RuntimeException(String.valueOf(Native.getLastError()));
+		}
+
+		final String encrypted = Crypt.INSTANCE.crypt(password, passwd.sp_pwdp);
+		System.out.printf("matches=%b%n", encrypted.equals(passwd.sp_pwdp));
+	}
+
+	interface Crypt extends Library {
+		/**
+		 * https://stackoverflow.com/questions/5989444/undefined-reference-to-crypt
+		 */
+		Crypt INSTANCE = Native.loadLibrary("crypt", Crypt.class);
+
+//		char *crypt(const char *key, const char *salt);
+			String crypt(String key, String salt);
 	}
 
 	interface CLibrary extends Library {
@@ -27,6 +56,7 @@ public class Main {
 
 //		struct spwd *getspnam(const char *name);
 		SPassword getspnam(String username);
+
 
 	}
 
