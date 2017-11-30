@@ -12,7 +12,7 @@ import com.sun.jna.Structure;
  * https://linux.die.net/man/3/getpwnam
  * http://man7.org/linux/man-pages/man3/crypt.3.html
  * https://www.gnu.org/software/coreutils/coreutils.html
- * https://github.com/wertarbyte/coreutils/blob/master/src/su.c
+ * https://github.com/coreutils/coreutils/blob/v8.4/src/su.c
  */
 public class Main {
 	public static void main(String[] args) {
