@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * https://linux.die.net/man/3/getpwnam
+ * https://www.gnu.org/software/coreutils/coreutils.html
+ * https://github.com/wertarbyte/coreutils/blob/master/src/su.c
  */
 public class Main {
 	public static void main(String[] args) {
