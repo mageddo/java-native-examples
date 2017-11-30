@@ -1,8 +1,8 @@
 // https://github.com/mageddo/go-static-linking
 package main
 
-// #cgo CFLAGS: -I${SRCDIR}/../../resources/lib/include
-// #cgo LDFLAGS: ${SRCDIR}/../../resources/lib/libcounter.so
+// #cgo CFLAGS: -I${SRCDIR}/../../../resources/lib/include
+// #cgo LDFLAGS: ${SRCDIR}/../../../resources/lib/libcounter.so
 // #include <counter.h>
 import "C"
 
