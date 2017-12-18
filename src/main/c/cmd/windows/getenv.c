@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <windows.h>
 
+// sample of how load dynamic libraries and call the functions
 // http://www.cplusplus.com/forum/windows/8555/
-
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
 typedef int (CALLBACK/*WINAPI*/* c_getenv)(const char* name, char* buf, int size);
 

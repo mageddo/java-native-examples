@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <windows.h>
 
-// http://www.cplusplus.com/forum/windows/8555/
+// change the system cursor
 
+// http://www.cplusplus.com/forum/windows/8555/
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
 // ids dos cursores - https://msdn.microsoft.com/en-us/library/windows/desktop/ms648070(v=vs.85).aspx
 // ids dos cursores para a funcao do systemcursor - https://msdn.microsoft.com/en-us/library/windows/desktop/ms648395(v=vs.85).aspx
