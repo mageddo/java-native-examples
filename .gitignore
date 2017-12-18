@@ -9,3 +9,4 @@ build/
 out
 src/main/resources/lib/
 *.iml
+*.exe

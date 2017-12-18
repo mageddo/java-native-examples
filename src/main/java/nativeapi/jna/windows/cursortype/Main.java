@@ -17,7 +17,10 @@ import java.util.List;
  * https://msdn.microsoft.com/en-us/library/windows/desktop/ms681386(v=vs.85).aspx
  * https://msdn.microsoft.com/en-us/library/windows/desktop/ms648045(v=vs.85).aspx
  * https://msdn.microsoft.com/en-us/library/windows/desktop/ms648051(v=vs.85).aspx
+ *
+ * @deprecated - it is incomplete, this sample is not working yet, see src/main/c/cmd/windows/cursortype.c
  */
+@Deprecated
 public class Main {
 
 	public interface User32 extends com.sun.jna.Library {
@@ -98,7 +101,8 @@ public class Main {
 //			LPoint p = new LPoint();
 //			System.out.println(User32.INSTANCE.GetCursorPos(p));
 //			System.out.println(p);
-			System.out.println(User32.INSTANCE.GetCursor().getPointer().getInt(0));
+			System.out.println(User32.INSTANCE.GetCursor());
+			System.out.println(Native.getLastError());
 			Thread.sleep(1000);
 		}
 	}
