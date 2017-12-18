@@ -24,6 +24,12 @@ public class Main {
 		User32 INSTANCE = com.sun.jna.Native.loadLibrary("User32.dll", User32.class);
 
 
+//		BOOL WINAPI GetCursorPos(
+//			_Out_ LPPOINT lpPoint
+//		);
+
+		boolean GetCursorPos(LPoint p);
+
 		com.sun.jna.platform.win32.WinDef.HCURSOR GetCursor();
 //		BOOL WINAPI GetIconInfo(
 //			_In_  HICON     hIcon,
@@ -79,16 +85,20 @@ public class Main {
 //			ICONINFO inf = new ICONINFO();
 //			System.out.println(User32.INSTANCE.GetIconInfo(icon, inf));
 //		System.out.println(User32.INSTANCE.MAKEINTRESOURCE(new WinDef.WORD(32650)));
-		System.out.println(com.sun.jna.platform.win32.User32.INSTANCE.LoadImage(null, "OCR_APPSTARTING", 2, 0, 0, WinUser.LR_MONOCHROME));
-		System.out.println(Native.getLastError());
+//		System.out.println(com.sun.jna.platform.win32.User32.INSTANCE.LoadImage(null, "OCR_APPSTARTING", 2, 0, 0, WinUser.LR_MONOCHROME));
+//		System.out.println(Native.getLastError());
 //		System.out.println(User32.INSTANCE.LoadImage(null, "OCR_IDI_APPLICATION", 2, 0, 0, 0));
-	System.exit(-1);
+//	System.exit(-1);
 		while (true){
-			ICONINFO inf = new ICONINFO();
+//			ICONINFO inf = new ICONINFO();
 //			System.out.println(User32.INSTANCE.GetCursor().getPointer().);
-			System.out.println(User32.INSTANCE.GetIconInfo(User32.INSTANCE.GetCursor(), inf));
-			System.out.println(inf.hbmMask);
+//			System.out.println(User32.INSTANCE.GetIconInfo(User32.INSTANCE.GetCursor(), inf));
+//			System.out.println(inf.hbmMask);
 //			System.out.println(inf.xHotspot);
+//			LPoint p = new LPoint();
+//			System.out.println(User32.INSTANCE.GetCursorPos(p));
+//			System.out.println(p);
+			System.out.println(User32.INSTANCE.GetCursor().getPointer().getInt(0));
 			Thread.sleep(1000);
 		}
 	}
@@ -103,6 +113,16 @@ public class Main {
 		@Override
 		protected List<String> getFieldOrder() {
 			return Arrays.asList("fIcon", "xHotspot", "yHotspot", "hbmMask", "hbmColor");
+		}
+	}
+
+	public static class LPoint extends Structure {
+
+		public long x,y;
+
+		@Override
+		protected List<String> getFieldOrder() {
+			return Arrays.asList("x", "y");
 		}
 	}
 }
