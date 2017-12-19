@@ -21,6 +21,14 @@ import java.util.*;
  */
 public class Main {
 
+	public static void main(String[] args) throws Exception {
+		while(true){
+			final Main main = new Main();
+			System.out.println(main.getCurrentCursor());
+			Thread.sleep(2000);
+		}
+	}
+
 	private final Map<WinNT.HANDLE, Cursor> cursors;
 	private final User32 user32;
 
@@ -28,6 +36,7 @@ public class Main {
 		user32 = User32.INSTANCE;
 		cursors = loadCursors();
 	}
+
 
 	/**
 	 * Load all possible cursors to a map
@@ -49,14 +58,6 @@ public class Main {
 			cursors.put(hcursor, cursor);
 		}
 		return Collections.unmodifiableMap(cursors);
-	}
-
-	public static void main(String[] args) throws InterruptedException, IOException {
-		while(true){
-			final Main main = new Main();
-			System.out.println(main.getCurrentCursor());
-			Thread.sleep(2000);
-		}
 	}
 
 	public Cursor getCurrentCursor(){
@@ -105,7 +106,7 @@ public class Main {
 //		);
 		int GetCursorInfo(CURSORINFO cursorinfo);
 
-		//		HANDLE WINAPI LoadImage(
+//		HANDLE WINAPI LoadImage(
 //			_In_opt_ HINSTANCE hinst,
 //			_In_     LPCTSTR   lpszName,
 //			_In_     UINT      uType,
@@ -146,7 +147,6 @@ public class Main {
 		Cursor(final int code) {
 			this.code = code;
 		}
-
 
 		public int getCode() {
 			return code;
