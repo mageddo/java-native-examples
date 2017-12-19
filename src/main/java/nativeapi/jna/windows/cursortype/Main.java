@@ -48,7 +48,7 @@ public class Main {
 			final Memory memory = new Memory(Native.getNativeSize(Long.class, null));
 			memory.setLong(0, cursor.getCode());
 			final Pointer resource = memory.getPointer(0);
-			final WinNT.HANDLE hcursor = User32.INSTANCE.LoadImageA(
+			final WinNT.HANDLE hcursor = this.user32.LoadImageA(
 				null, resource, WinUser.IMAGE_CURSOR, 0, 0, WinUser.LR_SHARED
 			);
 			if(hcursor == null || Native.getLastError() != 0){
@@ -62,7 +62,7 @@ public class Main {
 
 	public Cursor getCurrentCursor(){
 		final CURSORINFO cursorinfo = new CURSORINFO();
-		final int success = User32.INSTANCE.GetCursorInfo(cursorinfo);
+		final int success = this.user32.GetCursorInfo(cursorinfo);
 		if(success != 1){
 			throw new Error("Could not retrieve cursor info: " + String.valueOf(Native.getLastError()));
 		}
