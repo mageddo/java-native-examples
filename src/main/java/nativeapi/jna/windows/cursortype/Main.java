@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * https://msdn.microsoft.com/pt-br/library/windows/desktop/ms648029(v=vs.85).aspx
+ * Test cursors - https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
  * Chromium cursor map -  https://github.com/mageddo/chromium/blob/master/webkit/glue/webcursor_win.cc
  * Load icon example - https://github.com/java-native-access/jna/blob/master/contrib/platform/test/com/sun/jna/platform/win32/GDI32Test.java#L54
  * understanding makeintresource - https://stackoverflow.com/questions/3610565/why-does-makeintresource-work
@@ -35,20 +36,14 @@ public class Main {
 		final Map<WinNT.HANDLE, Cursor> cursors = new HashMap<>();
 		for (final Cursor cursor : Cursor.values()) {
 
-			final WinNT.HANDLE hcursor;
-			if(cursor.getCode() != -1){
-				final Memory memory = new Memory(Native.getNativeSize(Long.class, null));
-				memory.setLong(0, cursor.getCode());
-				final Pointer resource = memory.getPointer(0);
-				hcursor = User32.INSTANCE.LoadImageA(
-					null, resource, WinUser.IMAGE_CURSOR, 0, 0, WinUser.LR_SHARED
-				);
-				if(hcursor == null || Native.getLastError() != 0){
-					throw new Error("Cursor could not be loaded: " + String.valueOf(Native.getLastError()));
-				}
-//				System.out.printf("hcursor=%s, enum=%s\n", hcursor, cursor);
-			} else {
-				hcursor = new WinDef.HCURSOR(new Pointer(cursor.getAddress()));
+			final Memory memory = new Memory(Native.getNativeSize(Long.class, null));
+			memory.setLong(0, cursor.getCode());
+			final Pointer resource = memory.getPointer(0);
+			final WinNT.HANDLE hcursor = User32.INSTANCE.LoadImageA(
+				null, resource, WinUser.IMAGE_CURSOR, 0, 0, WinUser.LR_SHARED
+			);
+			if(hcursor == null || Native.getLastError() != 0){
+				throw new Error("Cursor could not be loaded: " + String.valueOf(Native.getLastError()));
 			}
 
 			cursors.put(hcursor, cursor);
@@ -72,8 +67,9 @@ public class Main {
 		}
 
 		// you can use the address printed here to map the others cursors like ALL_SCROLL
-		System.out.printf("currentPointer=%s%n", cursorinfo.hCursor.getPointer());
-		if(cursors.containsKey(cursorinfo.hCursor)){
+		System.out.printf("currentPointer=%s%n", cursorinfo.hCursor);
+		// some times cursor can be hidden, in this case it will be null
+		if(cursorinfo.hCursor != null && cursors.containsKey(cursorinfo.hCursor)){
 			return cursors.get(cursorinfo.hCursor);
 		}
 		return null;
@@ -142,31 +138,18 @@ public class Main {
 		SIZEWE(32644),
 		UP(32516),
 		WAIT(32514),
-		PEN(32631),
-
-		// UNMAPPED CURSORS (identified by address, manual test here to discover the address)
-		ALL_SCROLL(-1, 0xff10323),
-		ZOOM_IN(-1, 0xa580327)
+		PEN(32631)
 		;
 
 		private final int code;
-		private final int address;
 
 		Cursor(final int code) {
 			this.code = code;
-			this.address = -1;
 		}
-		Cursor(final int code, final int address) {
-			this.code = code;
-			this.address = address;
-		}
+
 
 		public int getCode() {
 			return code;
-		}
-
-		public int getAddress() {
-			return address;
 		}
 	}
 }
