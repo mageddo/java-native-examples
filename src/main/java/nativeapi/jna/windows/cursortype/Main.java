@@ -2,12 +2,12 @@ package nativeapi.jna.windows.cursortype;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.*;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * https://msdn.microsoft.com/pt-br/library/windows/desktop/ms648029(v=vs.85).aspx
@@ -23,34 +23,72 @@ import java.util.List;
  */
 public class Main {
 
-	public interface User32 extends com.sun.jna.Library {
-		User32 INSTANCE = com.sun.jna.Native.loadLibrary("User32.dll", User32.class);
+	private final Map<WinNT.HANDLE, Cursor> cursors;
+	private final User32 user32;
 
-		//		BOOL WINAPI GetCursorInfo(
+	public Main(){
+		user32 = User32.INSTANCE;
+		cursors = loadCursors();
+	}
+
+	public enum Cursor {
+		APPSTARTING(32650),
+		NORMAL(32512),
+		CROSS(32515),
+		HAND(32649),
+		HELP(32651),
+		IBEAM(32513),
+		NO(32648),
+		SIZEALL(32646),
+		SIZENESW(32643),
+		SIZENS(32645),
+		SIZENWSE(32642),
+		SIZEWE(32644),
+		UP(32516),
+		WAIT(32514),
+		PEN(32631),
+		SIZE(1029)
+		;
+
+		private final int code;
+		Cursor(final int code) {
+			this.code = code;
+		}
+
+		public int getCode() {
+			return code;
+		}
+	}
+
+	/**
+	 * Load all possible cursors to a map
+	 */
+	private Map<WinNT.HANDLE, Cursor> loadCursors() {
+		final Map<WinNT.HANDLE, Cursor> cursors = new HashMap<>();
+		for (final Cursor cursor : Cursor.values()) {
+
+			final Memory memory = new Memory(Native.getNativeSize(Long.class, null));
+			memory.setLong(0, cursor.getCode());
+			final Pointer resource = memory.getPointer(0);
+
+			final WinNT.HANDLE hcursor = User32.INSTANCE.LoadImageA(
+				null, resource, WinUser.IMAGE_CURSOR, 0, 0, WinUser.LR_SHARED
+			);
+			if(hcursor == null || Native.getLastError() != 0){
+				throw new Error("Cursor could not be loaded: " + String.valueOf(Native.getLastError()));
+			}
+			cursors.put(hcursor, cursor);
+		}
+		return Collections.unmodifiableMap(cursors);
+	}
+
+	public interface User32 extends com.sun.jna.Library {
+		User32 INSTANCE = Native.loadLibrary("User32.dll", User32.class);
+
+//		BOOL WINAPI GetCursorInfo(
 //			_Inout_ PCURSORINFO pci
 //		);
 		int GetCursorInfo(CURSORINFO cursorinfo);
-
-		com.sun.jna.platform.win32.WinDef.HCURSOR GetCursor();
-
-		//		BOOL WINAPI GetIconInfo(
-//			_In_  HICON     hIcon,
-//			_Out_ PICONINFO piconinfo
-//		);
-		boolean GetIconInfo(WinDef.HICON hicon, ICONINFO iconinfo);
-
-
-		//		LPTSTR MAKEINTRESOURCE(
-//			WORD wInteger
-//		);
-		String MAKEINTRESOURCE(WinDef.WORD code);
-
-//		HICON WINAPI LoadIcon(
-//			_In_opt_ HINSTANCE hInstance,
-//			_In_     LPCTSTR   lpIconName
-//		);
-
-		WinDef.HICON LoadIcon(WinDef.HINSTANCE hInstance, String lpIconName);
 
 //		HANDLE WINAPI LoadImage(
 //			_In_opt_ HINSTANCE hinst,
@@ -60,10 +98,9 @@ public class Main {
 //			_In_     int       cyDesired,
 //			_In_     UINT      fuLoad
 //		);
-
-		WinNT.HANDLE LoadImage(
+		WinNT.HANDLE LoadImageA(
 			WinDef.HINSTANCE hinst,
-			String lpszName,
+			Pointer lpszName,
 			int uType,
 			int cxDesired,
 			int cyDesired,
@@ -72,23 +109,27 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		final CURSORINFO cursorinfo = new CURSORINFO();
-		System.out.printf("success=%b, info=%s, error=%d", User32.INSTANCE.GetCursorInfo(cursorinfo), cursorinfo, Native.getLastError());
-		Thread.sleep(1000);
-	}
-
-
-	public static class LPoint extends Structure {
-
-		public long x, y;
-
-		@Override
-		protected List<String> getFieldOrder() {
-			return Arrays.asList("x", "y");
+		while(true){
+			final Main main = new Main();
+			System.out.println(main.getCurrentCursor());
+			Thread.sleep(2000);
 		}
 	}
 
-	//	typedef struct {
+	public Cursor getCurrentCursor(){
+		final CURSORINFO cursorinfo = new CURSORINFO();
+		final int success = User32.INSTANCE.GetCursorInfo(cursorinfo);
+		if(success != 1){
+			throw new Error("Could not retrieve cursor info: " + String.valueOf(Native.getLastError()));
+		}
+		System.out.printf("currentPointer=%s%n", cursorinfo.hCursor.getPointer());
+		if(cursors.containsKey(cursorinfo.hCursor)){
+			return cursors.get(cursorinfo.hCursor);
+		}
+		return null;
+	}
+
+//	typedef struct {
 //		DWORD   cbSize;
 //		DWORD   flags;
 //		HCURSOR hCursor;
@@ -104,23 +145,9 @@ public class Main {
 		public CURSORINFO() {
 			this.cbSize = Native.getNativeSize(CURSORINFO.class, null);
 		}
-
 		@Override
 		protected List<String> getFieldOrder() {
 			return Arrays.asList("cbSize", "flags", "hCursor", "ptScreenPos");
-		}
-	}
-
-	public static class ICONINFO extends Structure {
-		public boolean fIcon;
-		public WinDef.DWORD xHotspot;
-		public WinDef.DWORD yHotspot;
-		public WinDef.HBITMAP hbmMask;
-		public WinDef.HBITMAP hbmColor;
-
-		@Override
-		protected List<String> getFieldOrder() {
-			return Arrays.asList("fIcon", "xHotspot", "yHotspot", "hbmMask", "hbmColor");
 		}
 	}
 }

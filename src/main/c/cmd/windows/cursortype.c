@@ -29,7 +29,7 @@ int main() {
 		printf("info-success=%d, err=%d, cursor=%p\n", GetCursorInfo(&pci), GetLastError(), pci);
 		
 		 //char* cursors[] = { "OCR_APPSTARTING", "OCR_NORMAL", "OCR_CROSS", "OCR_HAND", "OCR_HELP", "OCR_IBEAM", "OCR_NO", "OCR_SIZEALL", "OCR_SIZENESW", "OCR_SIZENS", "OCR_SIZENWSE", "OCR_SIZEWE", "OCR_UP", "OCR_WAIT" };
-		 int cursors[] = { 32650,32512,32515,32649,32651,32513,32648,32646,32643,32645,32642,32644,32516,32514 };
+		int cursors[] = { 32650,32512,32515,32649,32651,32513,32648,32646,32643,32645,32642,32644,32516,32514 };
 		int i = 0;
 		for(; i < 14; i++){
 			
