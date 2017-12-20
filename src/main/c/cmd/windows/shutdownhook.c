@@ -21,9 +21,10 @@ int main(){
     WPARAM wParam,    // first message parameter
     LPARAM lParam)    // second message parameter 
 	{ 
- 		//printf("action=winproccalled, %s\n", time(0));
+ 		printf("action=winproccalled, event=%d\n", uMsg);
  		switch(uMsg){
 		    case WM_CLOSE:
+		    	printf("closing\n");
 		        PostQuitMessage(0);
 		        break;
 		    default:
@@ -84,19 +85,9 @@ int main(){
 	  _In_opt_ LPVOID    lpParam
 	);
 */	
-	HWND w = CreateWindowEx(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW|WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
+	HWND w = CreateWindowEx(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
 	printf("action=createWindow, w=%p, error=%d\n", w, GetLastError());
 	
-	/*
-		show the window - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633548(v=vs.85).aspx
-		BOOL WINAPI ShowWindow(
-		  _In_ HWND hWnd,
-		  _In_ int  nCmdShow
-		);
-
-	*/
-	
-//	printf("action=show-window, r=%d, error=%d\n", ShowWindow(w, SW_SHOWNORMAL), GetLastError());
 	MSG msg = {0};
 	while( GetMessage( &msg, NULL, 0, 0 ) > 0 )
         DispatchMessage( &msg );
