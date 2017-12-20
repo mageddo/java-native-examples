@@ -11,6 +11,7 @@ void *dostuff(void *ptr){
 /*
 	creating a winProc - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633570(v=vs.85).aspx
 	creating a window to associate the winProc - https://msdn.microsoft.com/library/windows/desktop/ms632680
+	complete window sample - https://www.codeproject.com/KB/dialog/minimalwinapiwindow/winbasecodeblocks.zip
 */
 int main(){
 	
@@ -84,7 +85,12 @@ int main(){
 	  _In_opt_ LPVOID    lpParam
 	);
 */	
-	HWND w = CreateWindowEx(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW|WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
+	HWND w = CreateWindowEx(
+		WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", 
+		WS_OVERLAPPEDWINDOW| WS_BORDER | WS_CAPTION | WS_HSCROLL/*|WS_VISIBLE com esse nao precisa chamar o ShowWindow*/, 
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		250, 100, NULL, NULL, NULL, NULL
+	);
 	printf("action=createWindow, w=%p, error=%d\n", w, GetLastError());
 	
 	/*
@@ -96,9 +102,9 @@ int main(){
 
 	*/
 	
-//	printf("action=show-window, r=%d, error=%d\n", ShowWindow(w, SW_SHOWNORMAL), GetLastError());
+	printf("action=show-window, r=%d, error=%d\n", ShowWindow(w, SW_SHOWNORMAL), GetLastError());
 	MSG msg = {0};
-	while( GetMessage( &msg, NULL, 0, 0 ) > 0 )
+	while( GetMessage( &msg, NULL, 0, 0 ) > 0 ) // listening GUI thread
         DispatchMessage( &msg );
 
 	return 0;
