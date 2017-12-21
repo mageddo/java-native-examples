@@ -127,7 +127,7 @@ action=winproccalled, event=36
 action=winproccalled, event=129
 action=winproccalled, event=131
 action=winproccalled, event=1
-action=winproccalled, event=799
+action=winproccalled, event=799 // ateh aqui foi a aplicacao subindo
 action=console, event=0
 action=winproccalled, event=800
 action=winproccalled, event=59
