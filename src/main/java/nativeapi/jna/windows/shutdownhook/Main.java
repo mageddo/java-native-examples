@@ -1,9 +1,14 @@
 package nativeapi.jna.windows.shutdownhook;
 
 import com.sun.jna.Library;
+import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WinProc creating sample in c++ - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633570(v=vs.85).aspx
@@ -42,7 +47,8 @@ public class Main {
 //	);
 		WinDef.HWND CreateWindowExW(
 			int dwExStyle,
-			String lpClassName,
+//			Pointer lpClassName,
+			Memory lpClassName,
 			String lpWindowName,
 			int dwStyle,
 			int x,
@@ -63,11 +69,41 @@ public class Main {
 //		);
 		boolean GetMessageW(WinUser.MSG lpMsg, WinDef.HWND hWnd, int wMsgFilterMin, int wMsgFilterMax);
 
-		//		LRESULT WINAPI DispatchMessage(
+		//		LRESULT WINAPI DispatchMessageW(
 //			_In_ const MSG *lpmsg
 //		);
-		WinDef.LRESULT DispatchMessage(WinUser.MSG lpmsg);
+		WinDef.LRESULT DispatchMessageW(WinUser.MSG lpmsg);
+
 	}
+
+	public interface Comctl32 extends Library {
+		Comctl32 INSTANCE = Native.loadLibrary("Comctl32", Comctl32.class);
+		boolean InitCommonControlsEx( INITCOMMONCONTROLSEX lpInitCtrls );
+	}
+	public interface Kernel32 extends Library {
+		Kernel32 INSTANCE = Native.loadLibrary("Kernel32", Kernel32.class);
+		WinDef.HMODULE GetModuleHandleW(String moduleName);
+	}
+
+//	typedef struct tagINITCOMMONCONTROLSEX {
+//		DWORD dwSize;
+//		DWORD dwICC;
+//	} INITCOMMONCONTROLSEX, *LPINITCOMMONCONTROLSEX;
+	public static class INITCOMMONCONTROLSEX extends Structure {
+
+	public INITCOMMONCONTROLSEX(int dwICC) {
+		this.dwSize = Native.getNativeSize(INITCOMMONCONTROLSEX.class, null);
+		this.dwICC = dwICC;
+	}
+
+	public int dwSize;
+		public int dwICC;
+		@Override
+		protected List<String> getFieldOrder() {
+			return Arrays.asList("dwSize", "dwICC");
+		}
+	}
+
 
 	public static class MyWinProc implements WinUser.WindowProc {
 		@Override
@@ -106,19 +142,30 @@ public class Main {
 //	ATOM WINAPI RegisterClassExW(
 //	  _In_ const WNDCLASSEX *lpwcx
 //	);
+
+			final INITCOMMONCONTROLSEX initcommoncontrolsex = new INITCOMMONCONTROLSEX(0x00008000);
+//			initcommoncontrolsex.
+			System.out.printf("success=%b, error=%d\n", Comctl32.INSTANCE.InitCommonControlsEx(initcommoncontrolsex), Native.getLastError());
+
 			final WinUser.WNDCLASSEX clazz = new WinUser.WNDCLASSEX();
-			clazz.lpszClassName = "MyPerfectWindow";
+			clazz.lpszClassName = "My Window";
 			clazz.cbSize = Native.getNativeSize(WinUser.WNDCLASSEX.class, null);
 			clazz.style = 4096;
-//		clazz.hbrBackground = new WinDef.HBRUSH();
+			//clazz.hbrBackground = new WinDef.HBRUSH();
 			clazz.cbClsExtra = 0;
 			clazz.cbWndExtra = 0;
+			clazz.lpfnWndProc = new MyWinProc();
 
 			WinDef.ATOM classInst = User32.INSTANCE.RegisterClassExW(clazz);
 			System.out.printf("action=registerclass, clazz=%s, error=%d\n", classInst, Native.getLastError());
 
+//			HWND w = CreateWindowExW(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
+
+			Memory m = new Memory(clazz.lpszClassName.length() * Native.WCHAR_SIZE);
+			m.setString(0, clazz.lpszClassName);
+
 			WinDef.HWND w = User32.INSTANCE.CreateWindowExW(
-				512, clazz.lpszClassName, "My Window",
+				512, m, "My Window",
 				WinUser.WS_OVERLAPPEDWINDOW, -2147483648, -2147483648, 250, 100,
 				null, null, null, null
 			);
@@ -126,7 +173,7 @@ public class Main {
 
 			WinUser.MSG msg = new WinUser.MSG();
 			while (User32.INSTANCE.GetMessageW(msg, null, 0, 0)) {
-				User32.INSTANCE.DispatchMessage(msg);
+				User32.INSTANCE.DispatchMessageW(msg);
 			}
 		}
 	}
