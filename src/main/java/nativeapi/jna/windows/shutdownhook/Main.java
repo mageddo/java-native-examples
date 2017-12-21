@@ -7,6 +7,9 @@ import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.win32.W32APIOptions;
 
 import java.io.*;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * WinProc creating sample in c++ - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633570(v=vs.85).aspx
@@ -128,8 +131,11 @@ public class Main {
 	}
 
 	/**
+	 * <pre>
 	 * All Possible events -
 	 * https://msdn.microsoft.com/en-us/library/windows/desktop/ms644927.aspx#system_defined
+	 * https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/um/WinUser.h
+	 * </pre>
 	 */
 	public static class MyWinProc implements WinUser.WindowProc {
 		private final OutputStream out;
@@ -149,6 +155,14 @@ public class Main {
 			System.out.print(msg);
 			try {
 				out.write(msg.getBytes());
+				switch (uMsg){
+					case 0x0016:
+						out.write("shutdown".getBytes());
+						break;
+					case 0x0011:
+						out.write("logoff".getBytes());
+						break;
+				}
 				out.flush();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
