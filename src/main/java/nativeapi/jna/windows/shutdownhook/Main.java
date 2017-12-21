@@ -108,7 +108,7 @@ public class Main {
 //	);
 			final WinUser.WNDCLASSEX clazz = new WinUser.WNDCLASSEX();
 			clazz.lpszClassName = "MyPerfectWindow";
-			clazz.cbSize = Native.getNativeSize(WinUser.WNDCLASSEX.class);
+			clazz.cbSize = Native.getNativeSize(WinUser.WNDCLASSEX.class, null);
 			clazz.style = 4096;
 //		clazz.hbrBackground = new WinDef.HBRUSH();
 			clazz.cbClsExtra = 0;

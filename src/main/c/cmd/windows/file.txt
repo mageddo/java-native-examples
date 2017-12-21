@@ -4,3 +4,4 @@ action=winproccalled, event=131
 action=winproccalled, event=1
 action=winproccalled, event=799
 action=winproccalled, event=49662
+action=console, event=2
