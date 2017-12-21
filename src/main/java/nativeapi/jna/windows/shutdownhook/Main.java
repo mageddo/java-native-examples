@@ -76,6 +76,7 @@ public class Main {
 //		);
 		WinDef.LRESULT DispatchMessageW(WinUser.MSG lpmsg);
 
+		WinDef.LRESULT DefWindowProc(WinDef.HWND hWnd, int uMsg, WinDef.WPARAM wParam, WinDef.LPARAM lParam);
 	}
 
 	public interface Comctl32 extends Library {
@@ -128,7 +129,7 @@ public class Main {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-			return new WinDef.LRESULT(0);
+			return User32.INSTANCE.DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
 
 		/*
