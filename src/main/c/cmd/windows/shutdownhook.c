@@ -3,11 +3,6 @@
 #include <stdio.h>
 #include <pthread.h>
 
-
-void *dostuff(void *ptr){
-	sleep(10);
-}
-
 /*
 	question - https://stackoverflow.com/questions/47837851/javafx-how-to-detect-windows-logoff-shutdown-request
 	creating a winProc - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633570(v=vs.85).aspx
@@ -21,6 +16,8 @@ void *dostuff(void *ptr){
 	all winproc events codes - https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/um/WinUser.h
 */
 int main(){
+
+	printf("CS_BYTEALIGNCLIENT=%d, WS_EX_CLIENTEDGE=%d, CW_USEDEFAULT=%d\n", CS_BYTEALIGNCLIENT, WS_EX_CLIENTEDGE, CW_USEDEFAULT);
 
 	FILE *f = fopen("file.txt", "w");
 	if (f == NULL) {
