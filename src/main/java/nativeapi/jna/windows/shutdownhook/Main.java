@@ -1,10 +1,9 @@
 package nativeapi.jna.windows.shutdownhook;
 
+import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
-import sun.plugin2.os.windows.Windows;
 
 /**
  * WinProc creating sample in c++ - https://msdn.microsoft.com/en-us/library/windows/desktop/ms633570(v=vs.85).aspx
@@ -18,16 +17,16 @@ import sun.plugin2.os.windows.Windows;
  */
 public class Main {
 
-	public static interface User32 {
+	public interface User32 extends Library {
 
 		User32 INSTANCE = Native.loadLibrary("User32", User32.class);
 
-		//		ATOM WINAPI RegisterClassEx(
+		//		ATOM WINAPI RegisterClassExW(
 //			_In_ const WNDCLASSEX *lpwcx
 //		);
-		WinDef.ATOM RegisterClassEx(WinUser.WNDCLASSEX lpwcx);
+		WinDef.ATOM RegisterClassExW(WinUser.WNDCLASSEX lpwcx);
 
-		//	HWND WINAPI CreateWindowEx(
+		//	HWND WINAPI CreateWindowExW(
 //	  _In_     DWORD     dwExStyle,
 //	  _In_opt_ LPCTSTR   lpClassName,
 //	  _In_opt_ LPCTSTR   lpWindowName,
@@ -41,7 +40,7 @@ public class Main {
 //	  _In_opt_ HINSTANCE hInstance,
 //	  _In_opt_ LPVOID    lpParam
 //	);
-		WinDef.HWND CreateWindowEx(
+		WinDef.HWND CreateWindowExW(
 			int dwExStyle,
 			String lpClassName,
 			String lpWindowName,
@@ -56,13 +55,13 @@ public class Main {
 			WinDef.LPVOID lpParam
 		);
 
-		//		BOOL WINAPI GetMessage(
+		//		BOOL WINAPI GetMessageW(
 //			_Out_    LPMSG lpMsg,
 //			_In_opt_ HWND  hWnd,
 //			_In_     UINT  wMsgFilterMin,
 //			_In_     UINT  wMsgFilterMax
 //		);
-		boolean GetMessage(WinUser.MSG lpMsg, WinDef.HWND hWnd, int wMsgFilterMin, int wMsgFilterMax);
+		boolean GetMessageW(WinUser.MSG lpMsg, WinDef.HWND hWnd, int wMsgFilterMin, int wMsgFilterMax);
 
 		//		LRESULT WINAPI DispatchMessage(
 //			_In_ const MSG *lpmsg
@@ -73,7 +72,7 @@ public class Main {
 	public static class MyWinProc implements WinUser.WindowProc {
 		@Override
 		public WinDef.LRESULT callback(WinDef.HWND hWnd, int uMsg, WinDef.WPARAM wParam, WinDef.LPARAM lParam) {
-			System.out.printf("status=proc-callback, event=%d %n", uMsg);
+			System.out.printf("action=proc-callback, event=%d %n", uMsg);
 			return new WinDef.LRESULT(0);
 		}
 
@@ -104,7 +103,7 @@ public class Main {
 //	  HICON     hIconSm;
 //	} WNDCLASSEX, *PWNDCLASSEX;
 //
-//	ATOM WINAPI RegisterClassEx(
+//	ATOM WINAPI RegisterClassExW(
 //	  _In_ const WNDCLASSEX *lpwcx
 //	);
 			final WinUser.WNDCLASSEX clazz = new WinUser.WNDCLASSEX();
@@ -115,10 +114,10 @@ public class Main {
 			clazz.cbClsExtra = 0;
 			clazz.cbWndExtra = 0;
 
-			WinDef.ATOM classInst = User32.INSTANCE.RegisterClassEx(clazz);
+			WinDef.ATOM classInst = User32.INSTANCE.RegisterClassExW(clazz);
 			System.out.printf("action=registerclass, clazz=%s, error=%d\n", classInst, Native.getLastError());
 
-			WinDef.HWND w = User32.INSTANCE.CreateWindowEx(
+			WinDef.HWND w = User32.INSTANCE.CreateWindowExW(
 				512, clazz.lpszClassName, "My Window",
 				WinUser.WS_OVERLAPPEDWINDOW, -2147483648, -2147483648, 250, 100,
 				null, null, null, null
@@ -126,7 +125,7 @@ public class Main {
 			System.out.printf("action=createWindow, w=%s, error=%d\n", w, Native.getLastError());
 
 			WinUser.MSG msg = new WinUser.MSG();
-			while (User32.INSTANCE.GetMessage(msg, null, 0, 0)) {
+			while (User32.INSTANCE.GetMessageW(msg, null, 0, 0)) {
 				User32.INSTANCE.DispatchMessage(msg);
 			}
 		}
