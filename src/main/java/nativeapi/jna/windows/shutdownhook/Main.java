@@ -6,7 +6,9 @@ import com.sun.jna.Native;
 import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.win32.W32APIOptions;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,14 +26,14 @@ public class Main {
 
 	public interface User32 extends Library {
 
-		User32 INSTANCE = Native.loadLibrary("User32", User32.class);
+		User32 INSTANCE = Native.loadLibrary("User32", User32.class, W32APIOptions.UNICODE_OPTIONS);
 
-		//		ATOM WINAPI RegisterClassExW(
+		//		ATOM WINAPI RegisterClassEx(
 //			_In_ const WNDCLASSEX *lpwcx
 //		);
-		WinDef.ATOM RegisterClassExW(WinUser.WNDCLASSEX lpwcx);
+		WinDef.ATOM RegisterClassEx(WinUser.WNDCLASSEX lpwcx);
 
-		//	HWND WINAPI CreateWindowExW(
+		//	HWND WINAPI CreateWindowEx(
 //	  _In_     DWORD     dwExStyle,
 //	  _In_opt_ LPCTSTR   lpClassName,
 //	  _In_opt_ LPCTSTR   lpWindowName,
@@ -45,10 +47,10 @@ public class Main {
 //	  _In_opt_ HINSTANCE hInstance,
 //	  _In_opt_ LPVOID    lpParam
 //	);
-		WinDef.HWND CreateWindowExW(
+		WinDef.HWND CreateWindowEx(
 			int dwExStyle,
 //			Pointer lpClassName,
-			Memory lpClassName,
+			String lpClassName,
 			String lpWindowName,
 			int dwStyle,
 			int x,
@@ -106,9 +108,26 @@ public class Main {
 
 
 	public static class MyWinProc implements WinUser.WindowProc {
+		private final OutputStream out;
+
+		public MyWinProc() {
+			try {
+				out = new FileOutputStream(new File("C:\\Users\\typerpc\\Documents\\log.log"));
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 		@Override
 		public WinDef.LRESULT callback(WinDef.HWND hWnd, int uMsg, WinDef.WPARAM wParam, WinDef.LPARAM lParam) {
-			System.out.printf("action=proc-callback, event=%d %n", uMsg);
+			final String msg = String.format("action=proc-callback, event=%d %n", uMsg);
+			System.out.print(msg);
+			try {
+				out.write(msg.getBytes());
+				out.flush();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			return new WinDef.LRESULT(0);
 		}
 
@@ -139,14 +158,13 @@ public class Main {
 //	  HICON     hIconSm;
 //	} WNDCLASSEX, *PWNDCLASSEX;
 //
-//	ATOM WINAPI RegisterClassExW(
+//	ATOM WINAPI RegisterClassEx(
 //	  _In_ const WNDCLASSEX *lpwcx
 //	);
 
-			final INITCOMMONCONTROLSEX initcommoncontrolsex = new INITCOMMONCONTROLSEX(0x00008000);
-//			initcommoncontrolsex.
-			System.out.printf("success=%b, error=%d\n", Comctl32.INSTANCE.InitCommonControlsEx(initcommoncontrolsex), Native.getLastError());
-
+//			final INITCOMMONCONTROLSEX initcommoncontrolsex = new INITCOMMONCONTROLSEX(0x00008000);
+//			System.out.printf("success=%b, error=%d\n", Comctl32.INSTANCE.InitCommonControlsEx(initcommoncontrolsex), Native.getLastError());
+//
 			final WinUser.WNDCLASSEX clazz = new WinUser.WNDCLASSEX();
 			clazz.lpszClassName = "My Window";
 			clazz.cbSize = Native.getNativeSize(WinUser.WNDCLASSEX.class, null);
@@ -156,16 +174,17 @@ public class Main {
 			clazz.cbWndExtra = 0;
 			clazz.lpfnWndProc = new MyWinProc();
 
-			WinDef.ATOM classInst = User32.INSTANCE.RegisterClassExW(clazz);
+			final WinDef.ATOM classInst = com.sun.jna.platform.win32.User32.INSTANCE.RegisterClassEx(clazz);
+//			WinDef.ATOM classInst = User32.INSTANCE.RegisterClassEx(clazz);
 			System.out.printf("action=registerclass, clazz=%s, error=%d\n", classInst, Native.getLastError());
 
-//			HWND w = CreateWindowExW(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
+//			HWND w = CreateWindowEx(WS_EX_CLIENTEDGE, clazz.lpszClassName, "My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 250, 100, NULL, NULL, NULL, NULL);
 
 			Memory m = new Memory(clazz.lpszClassName.length() * Native.WCHAR_SIZE);
 			m.setString(0, clazz.lpszClassName);
 
-			WinDef.HWND w = User32.INSTANCE.CreateWindowExW(
-				512, m, "My Window",
+			WinDef.HWND w = User32.INSTANCE.CreateWindowEx(
+				512, clazz.lpszClassName, "My Window",
 				WinUser.WS_OVERLAPPEDWINDOW, -2147483648, -2147483648, 250, 100,
 				null, null, null, null
 			);
