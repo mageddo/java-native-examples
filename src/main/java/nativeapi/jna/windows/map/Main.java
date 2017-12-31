@@ -1,10 +1,8 @@
 package nativeapi.jna.windows.map;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
+import com.sun.jna.*;
 
+import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.List;
@@ -13,14 +11,38 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("hexpid=" + Integer.toHexString(new Integer(ManagementFactory.getRuntimeMXBean().getName().split("@")[0])));
 		final Scanner in = new Scanner(System.in);
+		final CppMap players = new CppMap(Map.INSTANCE.getPlayers());
 
 		for(;;){
-			System.out.println(Map.INSTANCE.playerAction(in.nextInt()));
-			System.out.printf("players=%s\n", Map.INSTANCE.getPlayers());
-			final CppMap players = new CppMap(Map.INSTANCE.getPlayers());
+			final String input = in.next().toUpperCase();
+			switch (input){
+				case "ADD":
+					System.out.println("type an integer key:");
+					final int key = in.nextInt();
 
+					System.out.println("type an integer value:");
+					final int value = in.nextInt();
+
+//					final Memory keyp = new Memory(Native.LONG_SIZE);
+//					keyp.setInt(0, key);
+//					final Memory valuep = new Memory(Native.LONG_SIZE);
+//					valuep.setInt(0, value);
+					Map.INSTANCE.put(players.getPointer(), key, value);
+
+					break;
+
+				default:
+					System.out.println(Map.INSTANCE.playerAction(Integer.parseInt(input)));
+			}
+			System.out.printf("players=%s, size=%d%n", players, players.size());
 			for (MapItem player : players.getItems()) {
-				System.out.printf("key=%d, value=%d%n", player.getPointer().getInt(MapItem.KEY), player.getPointer().getInt(MapItem.VALUE));
+				System.out.printf(
+					"c0=%d, key=%d, value=%d, value2=%d%n",
+					player.getPointer().getInt(0),
+					player.getPointer().getInt(MapItem.KEY),
+					player.getPointer().getInt(MapItem.VALUE),
+					player.getPointer().getInt(0x28)
+				);
 			}
 
 		}
@@ -35,6 +57,9 @@ public class Main {
 		 * @param action
 		 */
 		int playerAction(int action);
+
+		Pointer get(Pointer map, Pointer key);
+		int put(Pointer map, Object key, Object value);
 	}
 
 	public static class CppMap {
@@ -55,6 +80,10 @@ public class Main {
 			return items;
 		}
 
+		public int size(){
+			return getPointer().getInt(0x28);
+		}
+
 		private void getItems(Set<MapItem> items, Pointer base){
 			if(base == null || items.contains(new MapItem(base))){
 				return ;
@@ -66,6 +95,11 @@ public class Main {
 			getItems(items, base.getPointer(0x8));
 			getItems(items, base.getPointer(0x10));
 			getItems(items, base.getPointer(0x18));
+		}
+
+		@Override
+		public String toString() {
+			return getPointer().toString();
 		}
 	}
 

@@ -26,21 +26,18 @@ compiling
 
 using namespace std;
 
-extern "C" map<int, string>* findUserById();
+extern "C" map<int, string>  findUserById();
 extern "C" map<int, int>* getPlayers();
 extern "C" int playerAction(int action);
 
-extern "C" int put(map<void*, void*> m, void* k, void* v);
-extern "C" void* get(map<void*, void*> m, void* k);
-
 void printPlayers(map<int, int>* players);
 
-map<int, string>* findUserById(){
-	map<int, string> users;
-	users[1] = "Bob";
-	users[2] = "Bob";
-	users[3] = "Ana";
-	return &users;
+map<int, string> findUserById(){
+	map<int, string> user;
+	user[1] = "Bob";
+	user[2] = "Bob";
+	user[3] = "Ana";
+	return user;
 }
 
 
@@ -64,23 +61,8 @@ int playerAction(int action){
 		*p = *p-1;
 		ret = 2; // player hited
 	}
+	printPlayers(&players);
 	return ret;
-}
-
-int put(map<void*, void*> m, void* k, void* v){
-	
-	std::pair<std::map<void*,void*>::iterator,bool> ret;
-	ret = m.insert(std::pair<void*,void*>(k, v));
-	if (ret.second == false) {
-		return 0;
-	}
-	printf("m2=put, k=%p, v=%p, mapv=%p\n", k, v, m[k]);
-	fflush(stdout);	
-	return 1;
-}
-
-void* get(map<void*, void*> m, void* k){
-	return m[k];
 }
 
 
@@ -90,7 +72,6 @@ int main(){
 	for(;;){
 		scanf("%d", &action);
 		playerAction(action);
-		printPlayers(&players);
 	}
 
 }
