@@ -30,20 +30,13 @@ public class Main {
 	}
 
 	public static void getAllItems(Set<Pointer> items, Pointer base){
-		if(base.getPointer(0x18) != null){
-			if(!items.contains(base.getPointer(0x18))){
-				items.add(base.getPointer(0x18));
-				getAllItems(items, base.getPointer(0x18));
-			}
+		if(base == null || items.contains(base)){
+			return ;
 		}
-		if(!items.contains(base.getPointer(0x8))){
-			items.add(base.getPointer(0x8));
-			getAllItems(items, base.getPointer(0x8));
-		}
-
-		if(base.getPointer(0x10) != null){
-			getAllItems(base.getPointer(0x10));
-		}
+		items.add(base);
+		getAllItems(items, base.getPointer(0x8));
+		getAllItems(items, base.getPointer(0x10));
+		getAllItems(items, base.getPointer(0x18));
 	}
 
 
