@@ -1,4 +1,8 @@
 /*
+compiling
+
+	g++ -fPIC -shared -o src/main/resources/lib/libmap.dll src/main/c/map.cpp
+
 ### Map
 * +18 primeiro item da map
 * +20 ultimo item da map
