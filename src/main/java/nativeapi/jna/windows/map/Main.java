@@ -13,32 +13,18 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("hexpid=" + Integer.toHexString(new Integer(ManagementFactory.getRuntimeMXBean().getName().split("@")[0])));
 		final Scanner in = new Scanner(System.in);
+
 		for(;;){
 			System.out.println(Map.INSTANCE.playerAction(in.nextInt()));
 			System.out.printf("players=%s\n", Map.INSTANCE.getPlayers());
+			final CppMap players = new CppMap(Map.INSTANCE.getPlayers());
 
-			final Pointer first = Map.INSTANCE.getPlayers().getPointer(0x18);
-			Set<Pointer> items = new HashSet<>();
-			getAllItems(items, first);
-
-			System.out.println("map content:");
-			for (Pointer item : items) {
-				System.out.printf("> item=%s %s=%s, %d=%d%n", item, item.getPointer(0x20), item.getPointer(0x24), item.getInt(0x20), item.getInt(0x24));
+			for (MapItem player : players.getItems()) {
+				System.out.printf("key=%d, value=%d%n", player.getPointer().getInt(MapItem.KEY), player.getPointer().getInt(MapItem.VALUE));
 			}
+
 		}
-
 	}
-
-	public static void getAllItems(Set<Pointer> items, Pointer base){
-		if(base == null || items.contains(base)){
-			return ;
-		}
-		items.add(base);
-		getAllItems(items, base.getPointer(0x8));
-		getAllItems(items, base.getPointer(0x10));
-		getAllItems(items, base.getPointer(0x18));
-	}
-
 
 	public interface Map extends Library{
 		Map INSTANCE = Native.loadLibrary("D:/dev/projects/java-native-examples/src/main/resources/lib/libmap.dll", Map.class);
@@ -52,14 +38,63 @@ public class Main {
 	}
 
 	public static class CppMap {
-		private final Pointer p;
+
+		private final Pointer pointer;
 
 		public CppMap(Pointer p) {
-			this.p = p;
+			this.pointer = p;
 		}
 
-		public void iterate(){
-			final Pointer first = p.getPointer(0x18);
+		public Pointer getPointer() {
+			return pointer;
+		}
+
+		public Set<MapItem> getItems(){
+			final Set<MapItem> items = new HashSet<>();
+			getItems(items, getPointer().getPointer(0x18));
+			return items;
+		}
+
+		private void getItems(Set<MapItem> items, Pointer base){
+			if(base == null || items.contains(new MapItem(base))){
+				return ;
+			}
+			if(base.getPointer(0x28) != null) { // is not the  map itself
+				items.add(new MapItem(base));
+			}
+
+			getItems(items, base.getPointer(0x8));
+			getItems(items, base.getPointer(0x10));
+			getItems(items, base.getPointer(0x18));
+		}
+	}
+
+	public static class MapItem {
+		private final Pointer pointer;
+		public static final int KEY = 0x20;
+		public static final int VALUE = 0x24;
+
+		public MapItem(Pointer p) {
+			this.pointer = p;
+		}
+
+		public Pointer getPointer() {
+			return pointer;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return this.getPointer().equals(((MapItem)obj).getPointer());
+		}
+
+		@Override
+		public int hashCode() {
+			return this.getPointer().hashCode();
+		}
+
+		@Override
+		public String toString() {
+			return String.format("{address: %x}", Pointer.nativeValue(getPointer()));
 		}
 	}
 
@@ -78,22 +113,5 @@ public class Main {
 
 	}
 
-	public static class MapItem {
 
-		private final Pointer pointer;
-
-		public MapItem(Pointer p) {
-			this.pointer = p;
-		}
-		public Pointer getKey(){
-			return getPointer().getPointer(0x20);
-		}
-		public Pointer getValue(){
-			return getPointer().getPointer(0x24);
-		}
-
-		public Pointer getPointer() {
-			return pointer;
-		}
-	}
 }
