@@ -28,6 +28,7 @@ using namespace std;
 
 extern "C" map<int, string>  findUserById();
 extern "C" map<int, int>* getPlayers();
+extern "C" int playerAction(int action);
 
 void printPlayers(map<int, int>* players);
 
@@ -39,43 +40,47 @@ map<int, string> findUserById(){
 	return user;
 }
 
+
+map<int, int> players;
+
 map<int, int>* getPlayers(){
-	map<int, int> players;
-	players[1] = 100;
-	players[2] = 99;
-	players[3] = 98;
-	printf("players=%p, first=%p\n", &players, &players[1]);
+	printf("players=%p\n", &players);
 	return &players;
 }
 
-/*
+int playerAction(int action){
+	int ret = -1;
+	if(action < 0){
+		players.clear();
+		
+	} else if(players.find(action) == players.end()){
+		players[action] = 100;
+		ret = 1; // player created
+	}else{
+		int* p = &players[action];
+		*p = *p-1;
+		ret = 2; // player hited
+	}
+	printPlayers(&players);
+	return ret;
+}
+
+
 int main(){
-	map<int, int> players;
 	int action = -1;
-	
+	printf("1 = Reduce Player x Health if doesn't exists create a new player with 100  health\n");
 	for(;;){
-		
-		printf("1 = Reduce Player x Health if doesn't exists create a new player with 100  health\n");
 		scanf("%d", &action);
-		if(action < 0){
-			players.clear();
-		} else if(players.find(action) == players.end()){
-			players[action] = 100;
-		}else{
-			int* p = &players[action];
-			*p = *p-1;
-		}
-		printPlayers(&players);
-		map<int, int>::iterator it;
-		
+		playerAction(action);
 	}
 
 }
 
-*/
+
 void printPlayers(map<int, int>* players) {
 	map<int, int>::iterator it;
 	for ( it = (*players).begin(); it != (*players).end(); it++ ) { 
-		printf("players=%p, %03d=%03d, %p=%p\n", players, it->first, it->second, &it->first, &it->second);
+		printf("players=%p, it=%x, %03d=%03d, %x=%x\n", players, it, it->first, it->second, &it->first, &it->second);
 	}
+	printf("\n");
 }
