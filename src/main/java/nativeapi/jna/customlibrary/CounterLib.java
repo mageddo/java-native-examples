@@ -3,11 +3,11 @@ package nativeapi.jna.customlibrary;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
-import static nativeapi.jna.customlibrary.CustomLibraryJNATest.getLibPath;
+import static nativeapi.libfinder.LibraryFinder.getFullLibPath;
 
 public interface CounterLib extends Library {
 
-	CounterLib INSTANCE = Native.loadLibrary(getLibPath() + "/libcounter.so", CounterLib.class);
+  CounterLib INSTANCE = Native.load(getFullLibPath("/libcounter.so"), CounterLib.class);
 
-	int incrementAndGet();
+  int incrementAndGet();
 }

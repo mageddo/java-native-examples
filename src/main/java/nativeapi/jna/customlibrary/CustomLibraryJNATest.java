@@ -7,21 +7,22 @@ import static nativeapi.jna.customlibrary.CustomLibraryJNATest.LibHello.INSTANCE
 
 public class CustomLibraryJNATest {
 
-	interface LibHello extends Library {
+  interface LibHello extends Library {
 
-		LibHello INSTANCE = (LibHello) Native.loadLibrary(getLibPath() + "/libhello.so", LibHello.class);
+    LibHello INSTANCE = (LibHello) Native.loadLibrary(getLibPath() + "/libhello.so", LibHello.class);
 
-		void hello(String message);
+    void hello(String message);
 
-	}
+  }
 
-	public static String getLibPath() {
-		return Class.class.getResource("/lib").getPath();
-	}
+  public static String getLibPath() {
+    return Class.class.getResource("/lib")
+        .getPath();
+  }
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		INSTANCE.hello("Elvis!");
+    INSTANCE.hello("Elvis!");
 
-	}
+  }
 }
