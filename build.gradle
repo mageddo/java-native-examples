@@ -6,7 +6,8 @@ apply plugin: 'application'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 //mainClassName = 'nativeapi.jna.windows.Main'
-mainClassName = 'nativeapi.jna.linux.password.Main'
+//mainClassName = 'nativeapi.jna.linux.password.Main'
+mainClassName = 'nativeapi.jna.memory_read_write.Main'
 
 repositories {
   mavenCentral()
@@ -18,14 +19,14 @@ dependencies {
   testImplementation group: 'junit', name: 'junit', version: '4.11'
 }
 
-compileJava.doFirst {
-  def proc = ['./builder'].execute()
-  def stdout = new StringBuilder()
-  proc.consumeProcessOutput(stdout, stdout)
-  if (proc.waitFor() != 0) {
-    throw new Error("could not build c libs: " + stdout)
-  }
-}
+//compileJava.doFirst {
+//  def proc = ['./builder'].execute()
+//  def stdout = new StringBuilder()
+//  proc.consumeProcessOutput(stdout, stdout)
+//  if (proc.waitFor() != 0) {
+//    throw new Error("could not build c libs: " + stdout)
+//  }
+//}
 
 task fatjar(type: Jar) {
   baseName = project.name + '-all'

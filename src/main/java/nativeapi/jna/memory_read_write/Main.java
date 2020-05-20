@@ -3,13 +3,19 @@ package nativeapi.jna.memory_read_write;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Advapi32;
+import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.ptr.IntByReference;
 
+import java.nio.channels.AsynchronousServerSocketChannel;
+
 // https://pastebin.com/Vq8wfy39
-public class SolitaireHack {
+public class Main {
 
   final static long baseAddress = 0x10002AFA8L;
   final static int[] offsets = new int[]{0x50, 0x14};
@@ -21,8 +27,68 @@ public class SolitaireHack {
   public static int PROCESS_VM_WRITE = 0x0020;
   public static int PROCESS_VM_OPERATION = 0x0008;
 
-  public static void main(String... args) {
-    int pid = getProcessId("Solitaire");
+  public static void main(String... args) throws InterruptedException {
+
+//    boolean isAdmin = false;
+//    Advapi32Util.Account[] groups = Advapi32Util.getCurrentUserGroups();
+//    for (Advapi32Util.Account group : groups) {
+//      WinNT.PSIDByReference sid = new WinNT.PSIDByReference();
+//      Advapi32.INSTANCE.ConvertStringSidToSid(group.sidString, sid);
+//      if (Advapi32.INSTANCE.IsWellKnownSid(sid.getValue(),
+//          WinNT.WELL_KNOWN_SID_TYPE.WinBuiltinAdministratorsSid)) {
+//        isAdmin = true;
+//        break;
+//      }
+//    }
+//    if (isAdmin){
+//      System.out.println("Current User is ADMIN");
+//    }
+//    else{
+//      System.out.println("Current User is not ADMIN");
+//    }
+
+//    WinNT.HANDLEByReference hToken = new WinNT.HANDLEByReference();
+//    Advapi32.INSTANCE.OpenProcessToken(Kernel32.INSTANCE.GetCurrentProcess(), WinNT.TOKEN_ADJUST_PRIVILEGES, hToken);
+//    WinNT.TOKEN_PRIVILEGES privileges = new WinNT.TOKEN_PRIVILEGES(2);
+//
+//    {
+//      WinNT.LUID luid = new WinNT.LUID();
+//      Advapi32.INSTANCE.LookupPrivilegeValue("", WinNT.SE_SHUTDOWN_NAME, luid);
+//      privileges.Privileges[0] = new WinNT.LUID_AND_ATTRIBUTES(luid, new WinDef.DWORD(WinNT.SE_PRIVILEGE_ENABLED));
+//    }
+//    {
+//      WinNT.LUID luid = new WinNT.LUID();
+//      Advapi32.INSTANCE.LookupPrivilegeValue("", WinNT.SE_DEBUG_NAME, luid);
+//      privileges.Privileges[1] = new WinNT.LUID_AND_ATTRIBUTES(luid, new WinDef.DWORD(WinNT.SE_PRIVILEGE_ENABLED));
+//    }
+//    final boolean adjusted = Advapi32.INSTANCE.AdjustTokenPrivileges(
+//        hToken.getValue(),
+//        false,
+//        privileges,
+//        privileges.size(),
+//        null,
+//        new IntByReference()
+//    );
+//    System.out.printf("adjusted=%b%n", adjusted);
+
+
+//    WinNT.HANDLEByReference phToken = new WinNT.HANDLEByReference();
+//    try {
+//      WinNT.HANDLE processHandle = Kernel32.INSTANCE.GetCurrentProcess();
+//      assert Advapi32.INSTANCE.OpenProcessToken(
+//          processHandle,
+//          WinNT.TOKEN_DUPLICATE | WinNT.TOKEN_QUERY, phToken
+//      );
+//    } finally {
+//      Kernel32Util.closeHandleRef(phToken);
+//    }
+
+    final Windows windows = new Windows();
+    windows.listProcesses();
+
+    System.exit(0);
+
+    int pid = getProcessId("game-01.exe");
     WinNT.HANDLE process = openProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION, pid);
 
     Pointer dynAddress = findDynAddress(process, offsets, baseAddress);
