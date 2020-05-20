@@ -13,7 +13,6 @@ public class LibraryFinder {
     final String foundPath = LibraryFinder.class
         .getResource(String.format("/lib%s", relativePath))
         .getPath();
-    System.out.println(">>>" + foundPath);
     return foundPath;
   }
 }
