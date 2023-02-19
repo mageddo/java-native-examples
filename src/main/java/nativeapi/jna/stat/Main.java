@@ -28,6 +28,15 @@ public class Main {
       System.out.println(new Date(stat.st_mtim.tv_sec * 1000));
 //      System.out.println(stat);
     }
+
+    /*
+      0
+      st_mode=true | 49584
+      1676430002
+      0
+      st_mode=false | 4294967329277
+      Sun Feb 21 17:37:07 BRT 2021
+     */
   }
   static int __S_IFSOCK =	0140000;
   static int __S_IFMT	= 0170000;
