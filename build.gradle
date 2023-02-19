@@ -4,7 +4,8 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'application'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 //mainClassName = 'nativeapi.jna.windows.Main'
 //mainClassName = 'nativeapi.jna.linux.password.Main'
 mainClassName = 'nativeapi.jna.memory_read_write.Main'
