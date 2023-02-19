@@ -10,7 +10,7 @@ Then, navigate to the code then run the main functions in your favorite IDE (tes
 
 	./builder && go run src/main/go/cmd/main.go
 
-## Compile a module do something like
+## To Compile a module do something like
 
  	gcc -fPIC -shared -o libhello.so hello.c
 

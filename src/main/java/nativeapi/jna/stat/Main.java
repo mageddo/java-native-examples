@@ -15,16 +15,16 @@ public class Main {
   public static void main(String[] args) {
     {
       final var stat = new Stat.ByReference();
-      final var res = Stats.INSTANCE.stat("/var/run/docker.sock", stat);
+      final var res = Stats.INSTANCE.stat0("/var/run/docker.sock", stat);
       System.out.println(res);
-      System.out.printf("st_mode=%s%n", parse(stat));
+      System.out.printf("st_mode: %s%n", parse(stat));
       System.out.println(stat.st_mtim.tv_sec);
     }
     {
       final var stat = new Stat.ByReference();
-      final var res = Stats.INSTANCE.stat("/home/typer/kill-quarkus-dev.sh", stat);
+      final var res = Stats.INSTANCE.stat0("/usr/bin/cat", stat);
       System.out.println(res);
-      System.out.printf("st_mode=%s%n", parse(stat));
+      System.out.printf("st_mode: %s%n", parse(stat));
       System.out.println(new Date(stat.st_mtim.tv_sec * 1000));
 //      System.out.println(stat);
     }
@@ -50,6 +50,6 @@ public class Main {
   }
 
   static String parse(Stat.ByReference stat) {
-    return String.format("%s | %s", S_ISSOCK(stat.st_mode.intValue()), stat.st_mode);
+    return String.format("isSocket=%b | mode=%s", S_ISSOCK(stat.st_mode.intValue()), stat.st_mode);
   }
 }

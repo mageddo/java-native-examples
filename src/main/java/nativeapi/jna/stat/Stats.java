@@ -9,10 +9,19 @@ import com.sun.jna.Platform;
  */
 public interface Stats extends Library {
 
-  Stats INSTANCE = Native.loadLibrary((Platform.isLinux() ? Platform.C_LIBRARY_NAME : null), Stats.class);
+  Stats INSTANCE = Native.loadLibrary(Platform.C_LIBRARY_NAME, Stats.class);
 
   /**
    * int stat(const char *restrict pathname, struct stat *restrict statbuf);
+   * @deprecated  don't use that because it's not availble in glibc 2.24, use via syscall instead.
+   * @see #stat0(String, Stat)
    */
-  int stat(String pathname, Stat.ByReference statbuf);
+  int stat(String pathname, Stat statbuf);
+
+  int syscall(int number, Object... args);
+
+  default int stat0(String pathname, Stat statbuf){
+    return this.syscall(4, pathname, statbuf);
+  }
+
 }
