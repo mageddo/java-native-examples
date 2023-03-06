@@ -7,6 +7,12 @@ import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant;
 import com.sun.jna.ptr.IntByReference;
 
+/**
+ * https://stackoverflow.com/questions/55651597/how-to-i-access-the-data-of-a-wmi-query-via-jna-safearray-result
+ * https://stackoverflow.com/questions/72265941/calling-iwbemservices-getobject-with-jna-and-java
+ * https://github.com/java-native-access/jna/pull/1474
+ * https://github.com/java-native-access/jna/blob/master/contrib/platform/test/com/sun/jna/platform/win32/COM/WbemcliTest.java
+ */
 public class GetLastBootMain {
   // 20230305170531.500000-180
   public static void main(String[] args) {
