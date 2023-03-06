@@ -16,7 +16,10 @@ gradlew text eol=lf
 .gitignore eol=lf
 .env eol=lf
 .gitattributes eol=lf
-
+.editorconfig eol=lf
+Dockerfile eol=lf
+*.Dockerfile eol=lf
+Dockerfile.* eol=lf
 
 *.bat text eol=crlf
 
