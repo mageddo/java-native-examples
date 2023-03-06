@@ -1,23 +1,15 @@
 package nativeapi.jna.wmi;
 
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.StringArray;
-import com.sun.jna.platform.unix.solaris.Kstat2;
 import com.sun.jna.platform.win32.COM.COMUtils;
 import com.sun.jna.platform.win32.COM.Wbemcli;
 import com.sun.jna.platform.win32.COM.WbemcliUtil;
-import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.OaIdl;
 import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.OleAuto;
 import com.sun.jna.platform.win32.Variant;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
-import nativeapi.jna.windows.wmi.IWbemServicesExtended;
-
-import java.util.Arrays;
 
 /**
  * https://community.spiceworks.com/topic/405339-replace-static-dns-settings-with-wmi-and-powershell
