@@ -18,24 +18,28 @@ public class GetLastBootMain {
   public static void main(String[] args) {
 
     Ole32.INSTANCE.CoInitialize(null);
-
-//    Wbemcli.IWbemServices svc = WbemcliUtil.connectServer("ROOT\\CIMV2");
-    Wbemcli.IWbemServices svc = WbemcliUtil.connectServer(WbemcliUtil.DEFAULT_NAMESPACE);
-//    Wbemcli.IEnumWbemClassObject enumerator = svc.ExecQuery("wmic", "wmic nicconfig where (IPEnabled=TRUE)", Wbemcli.WBEM_FLAG_FORWARD_ONLY, null);
-    Wbemcli.IEnumWbemClassObject enumerator = svc.ExecQuery("wql", "SELECT * FROM Win32_OperatingSystem", Wbemcli.WBEM_FLAG_FORWARD_ONLY, null);
+    final Wbemcli.IWbemServices svc = WbemcliUtil.connectServer(WbemcliUtil.DEFAULT_NAMESPACE);
+    final Wbemcli.IEnumWbemClassObject enumerator = svc.ExecQuery(
+      "wql", "SELECT * FROM Win32_OperatingSystem", Wbemcli.WBEM_FLAG_FORWARD_ONLY, null
+    );
     try {
       while (true) {
-        final var items = enumerator.Next(0, 1);
-        for (Wbemcli.IWbemClassObject o : items) {
-          Variant.VARIANT.ByReference pVal = new Variant.VARIANT.ByReference();
-          IntByReference pType = new IntByReference();
-          IntByReference plFlavor = new IntByReference();
-          COMUtils.checkRC(o.Get("LastBootUpTime", 0, pVal, pType, plFlavor));
-          System.out.println(pVal.getValue());
-        }
+        final Wbemcli.IWbemClassObject[] items = enumerator.Next(0, 1);
         if (items.length == 0) {
           break;
         }
+        for (final Wbemcli.IWbemClassObject o : items) {
+          try {
+            Variant.VARIANT.ByReference pVal = new Variant.VARIANT.ByReference();
+            IntByReference pType = new IntByReference();
+            IntByReference plFlavor = new IntByReference();
+            COMUtils.checkRC(o.Get("LastBootUpTime", 0, pVal, pType, plFlavor));
+            System.out.println(pVal.getValue());
+          } finally {
+            o.Release();
+          }
+        }
+
       }
     } finally {
       enumerator.Release();
