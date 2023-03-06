@@ -8,7 +8,9 @@ import com.sun.jna.NativeLibrary;
 
 public class LibraryUtils {
   public static void main(String[] args) {
-    findFunc("stat", "c");
+//    findFunc("stat", "c");
+    findFunc("DnsSetSettings", "user32");
+//    findFunc("DnsSetSettings", "C:\\Users\\Typer\\Documents\\dnsapi\\system32\\dnsapi.dll");
   }
   private static void findFunc(String funcName, final String libname) {
 
