@@ -1,18 +1,14 @@
-group 'com.mageddo'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'application'
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-//mainClassName = 'nativeapi.jna.windows.Main'
-//mainClassName = 'nativeapi.jna.linux.password.Main'
-mainClassName = 'nativeapi.jna.memory_read_write.Main'
+plugins {
+  id "java"
+}
 
 repositories {
   mavenCentral()
 }
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
 
 dependencies {
   implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0'
@@ -33,11 +29,15 @@ dependencies {
 //  }
 //}
 
-task fatjar(type: Jar) {
-  baseName = project.name + '-all'
+def mainClassName = 'nativeapi.jacob.wmi.Main'
+task fatJar(type: Jar) {
+  archiveBaseName = project.name + '-all'
   manifest {
-    attributes 'Main-Class': "${mainClassName}"
+    attributes(
+      'Main-Class': mainClassName,
+      'Class-Path': configurations.compileClasspath.collect { "lib/${it.name}" }.join(' ')
+    )
   }
-  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+  from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
   with jar
 }
