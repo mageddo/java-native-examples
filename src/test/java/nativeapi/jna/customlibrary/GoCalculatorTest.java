@@ -15,11 +15,11 @@ public class GoCalculatorTest {
     assumeTrue(Platform.isLinux());
   }
 
-	@Test
-	public void sum() throws Exception {
-		Assert.assertEquals(3, GoCalculator.INSTANCE.Add(1,2));
-		Assert.assertEquals(5, GoCalculator.INSTANCE.Add(-2,7));
+  @Test
+  public void sum() throws Exception {
+    Assert.assertEquals(3, GoCalculator.INSTANCE.Add(1, 2));
+    Assert.assertEquals(5, GoCalculator.INSTANCE.Add(-2, 7));
 
-	}
+  }
 
 }
