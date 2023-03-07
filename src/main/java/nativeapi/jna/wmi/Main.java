@@ -21,7 +21,11 @@ import com.sun.jna.ptr.PointerByReference;
  * https://github.com/tpn/winsdk-10/blob/9b69fd26ac0c7d0b83d378dba01080e93349c2ed/Include/10.0.10240.0/um/WbemCli.h#L1959
  * https://github.com/tpn/winsdk-10/blob/9b69fd26ac0c7d0b83d378dba01080e93349c2ed/Include/10.0.10240.0/um/WbemCli.h#L2123
  * 25 ExecMethod
+ *
+ * @deprecated JNA api for wmi is very difficult to use and incomplete, give a try at {@link nativeapi.jacob.wmi.Main}
+ * for a better sample.
  */
+@Deprecated
 public class Main {
   //
   public static void main(String[] args) {
