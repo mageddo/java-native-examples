@@ -1,14 +1,14 @@
 package nativeapi.usecase.net.ip.jna;
 
-import com.mageddo.jna.ExecutionException;
 import com.sun.jna.ptr.IntByReference;
+import nativeapi.utils.ExecutionException;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Objects;
 
-import static com.mageddo.jna.WindowsConstants.ERROR_INSUFFICIENT_BUFFER;
-import static com.mageddo.jna.WindowsConstants.NO_ERROR;
+import static com.sun.jna.platform.win32.WinError.ERROR_INSUFFICIENT_BUFFER;
+import static com.sun.jna.platform.win32.WinError.NO_ERROR;
 
 public class IpHelper {
 

@@ -1,7 +1,7 @@
 package nativeapi.usecase.net.ip.jna;
 
-import com.mageddo.utils.Fields;
 import com.sun.jna.Structure;
+import nativeapi.utils.Fields;
 
 import java.util.List;
 import java.util.UUID;
