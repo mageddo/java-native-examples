@@ -21,9 +21,6 @@ public class Main {
   //
   public static void main(String[] args) {
 
-
-    System.setProperty("jacob.dll.path", "G:\\users\\typer\\Downloads\\jacob-1.20\\jacob\\META-INF\\jacob-1.20-x64.dll");
-
     final var wmi = new ActiveXComponent("WbemScripting.SWbemLocator");
     // no connection parameters means to connect to the local machine
     Variant conRet = wmi.invoke("ConnectServer");
