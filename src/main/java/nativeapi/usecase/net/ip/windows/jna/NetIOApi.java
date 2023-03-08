@@ -1,4 +1,4 @@
-package nativeapi.usecase.net.ip.jna;
+package nativeapi.usecase.net.ip.windows.jna;
 
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;

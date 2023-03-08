@@ -1,4 +1,4 @@
-package nativeapi.usecase.net.ip.jna;
+package nativeapi.usecase.net.ip.windows.jna;
 
 import com.sun.jna.ptr.IntByReference;
 import nativeapi.utils.ExecutionException;
