@@ -15,14 +15,14 @@ public class Main {
   public static void main(String[] args) {
     {
       final var stat = new Stat.ByReference();
-      final var res = Stats.INSTANCE.stat0("/var/run/docker.sock", stat);
+      final var res = Stats.INSTANCE.wrappedStat("/var/run/docker.sock", stat);
       System.out.println(res);
       System.out.printf("st_mode: %s%n", parse(stat));
       System.out.println(stat.st_mtim.tv_sec);
     }
     {
       final var stat = new Stat.ByReference();
-      final var res = Stats.INSTANCE.stat0("/usr/bin/cat", stat);
+      final var res = Stats.INSTANCE.wrappedStat("/usr/bin/cat", stat);
       System.out.println(res);
       System.out.printf("st_mode: %s%n", parse(stat));
       System.out.println(new Date(stat.st_mtim.tv_sec * 1000));
