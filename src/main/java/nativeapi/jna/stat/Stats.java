@@ -14,13 +14,13 @@ public interface Stats extends Library {
   /**
    * int stat(const char *restrict pathname, struct stat *restrict statbuf);
    * @deprecated  don't use that because it's not availble in glibc 2.24, use via syscall instead.
-   * @see #stat0(String, Stat)
+   * @see #wrappedStat(String, Stat)
    */
   int stat(String pathname, Stat statbuf);
 
   int syscall(int number, Object... args);
 
-  default int stat0(String pathname, Stat statbuf){
+  default int wrappedStat(String pathname, Stat statbuf){
     return this.syscall(4, pathname, statbuf);
   }
 
